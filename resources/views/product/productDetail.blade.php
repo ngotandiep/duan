@@ -341,5 +341,64 @@
     @enderror
     <script>
 
+        $(function() {
+            $("#rateYo").rateYo({
+                rating: 0
+            }).on('rateyo.set', function(e, data) {
+                $('#rating_start').val(data.rating);
+                // alert("The rating is set to" + data.rating + "!")
+            });
+        });
+        $(function() {
+            $("#rateProduct").rateYo({
+                rating: {{ $averageRating }}
+            }).on('rateyo.set', function(e, data) {
+                $('#rating_start').val(data.rating);
+                // alert("The rating is set to" + data.rating + "!")
+            });
+        });
+        $(function() {
+            // Initialize individual item ratings
+            @foreach ($comments as $index => $item)
+                $("#rateItem_{{ $index }}").rateYo({
+                    rating: {{ $item->rating }}
+                })
+            @endforeach
+        });
+
+
+        function makeToast(message, color) {
+            Toastify({
+                text: message,
+                backgroundColor: color,
+            }).showToast();
+        }
+
+
+        function submitform() {
+            var $form = $('#form_create')[0];
+            var contentValue = $('#content').val().trim(); // Thay '#content' bằng id của trường content thực tế
+
+            if ($form.checkValidity()) {
+                if (checkContentLength(contentValue)) {
+                    $form.submit();
+                } else {
+                    makeToast('Nội dung cần có tối đa 300 ký tự', '#F28585');
+                }
+            } else {
+                makeToast('Bạn cần nhập đầy đủ đánh giá sao và nội dung', '#F28585');
+            }
+            return false;
+        }
+
+        function checkContentLength(content) {
+            var maxLength = 300;
+            return content.length <= maxLength;
+        }
+
+        submitform();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 @endsection
 @endsection
