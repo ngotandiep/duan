@@ -20,7 +20,11 @@
                                     <li><a href="{{ request()->fullUrlWithQuery(['category' => '']) }}">Tất
                                             cả</a>
                                     </li>
-                                    
+                                    @foreach ($categories as $category)
+                                        <li><a class="{{ $category->id == request()->input('category') ? 'active' : '' }}"
+                                                href="{{ request()->fullUrlWithQuery(['category' => $category->id]) }}">{{ $category->name }}</a>
+                                        </li>
+                                    @endforeach
                                     {{-- <li><a href="#">Men (20)</a></li> --}}
                                 </ul>
                             </div>
@@ -38,7 +42,11 @@
                                     <li><a href="{{ request()->fullUrlWithQuery(['brand' => '']) }}">Tất
                                             cả</a>
                                     </li>
-
+                                    @foreach ($brands as $brand)
+                                        <li><a class="{{ $brand->id == request()->input('brand') ? 'active' : '' }}"
+                                                href="{{ request()->fullUrlWithQuery(['brand' => $brand->id]) }}">{{ $brand->name }}</a>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
